@@ -1,0 +1,15 @@
+library(fpp)
+data("hsales")
+plot(hsales)
+fitd <- decompose(hsales)
+plot(fitd)
+fit <- stl(hsales, s.window=5)
+plot(fit)
+eeadj <- seasadj(fitd)
+plot(eeadj)
+hsales2 <- ts(c(hsales[1:54],hsales[55]+200,hsales[56:191]),start=c(1996,1),frequency=12)
+plot(hsales2)
+plot(hsales, col="gray",
+main="Electrical equipment manufacturing",
+ylab="New orders index", xlab="")
+lines(fit$time.series[,2],col="red",ylab="Trend")

@@ -1,0 +1,74 @@
+---
+title: "LiveSessionUnit11"
+author: "Jacob Brionez"
+date: "November 20, 2016"
+output: html_document
+---
+
+```{r}
+library(fpp)
+data("hsales")
+```
+
+## a)	Plot the time series. Can you identify seasonal fluctuations and/or a trend? 
+Yes it can be seen that there are highs and lows at regular intervals indicating a seasonal cycle.
+
+```{r}
+plot(hsales)
+```
+
+## b)	Use a classical decomposition to calculate the trend-cycle and seasonal indices. 
+
+```{r}
+fitd <- decompose(hsales)
+plot(fitd)
+```
+
+## c)	Do the results support the graphical interpretation from part (a)? 
+Yes, it does show in the seasonal decomposition that there are similar patterns in the time scale.
+
+```{r}
+
+```
+
+##d)	Compute and plot the seasonally adjusted data. 
+
+```{r}
+
+eeadj <- seasadj(fitd)
+plot(eeadj)
+```
+
+## e)	Change one observation to be an outlier (e.g., add 500 to one observation), and recompute the seasonally adjusted data. What is the effect of the outlier? 
+The outlier causes a spike in the seasonally adjusted data and affected a period of time before and after the spike that looks to be about a year before and after the spike.
+
+```{r}
+hsales[55] <- hsales[55]+500
+fitd2 <- decompose(hsales)
+plot(fitd2)
+eeadj2 <- seasadj(fitd2)
+plot(eeadj2)
+```
+
+## f)	Does it make any difference if the outlier is near the end rather than in the middle of the time series? 
+With the exception of the placement of the outlier it does not seem to make a difference in the overall time series upon visual inspection.
+
+```{r}
+hsales[55] <- hsales[55]-500
+hsales[200] <- hsales[200]+500
+fitd2 <- decompose(hsales)
+plot(fitd2)
+eeadj2 <- seasadj(fitd2)
+plot(eeadj2)
+```
+
+##g)	Use STL to decompose the series. 
+
+```{r}
+fit <- stl(hsales, s.window=5)
+plot(fit)
+plot(hsales, col="gray",
+main="Effect of Outlier",
+ylab="hsales", xlab="")
+lines(fit$time.series[,2],col="red",ylab="Trend")
+```
